@@ -43,6 +43,6 @@ Vec3D operator/(Vec3D, double);
 Vec3D operator-(Vec3D, Vec3D);
 Vec3D operator+(Vec3D, Vec3D);
 double operator*(Vec3D, Vec3D);
-Vec3D normal(Vec3D &);
+Vec3D unit(Vec3D );
 
 #endif

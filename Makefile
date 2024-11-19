@@ -1,5 +1,5 @@
 CFILES = main.cpp vec.cpp 
-HFILES = Makefile vec.h color.h
+HFILES = Makefile vec.h color.h hittable.h sphere.h hittable_list.h
 FILES = $(CFILES) $(HFILES)
 CC = clang++
 OUT = bin/main

@@ -1,24 +1,17 @@
-#include <iostream>
 #include <fstream>
-#include "color.h"
-#include "vec.h"
-#include "ray.h"
+#include "constants.h"
+#include "hittable.h"
+#include "hittable_list.h"
+#include "sphere.h"
 
 #define ASPECT_RATIO 1.6 // 1600:1000
 
-bool hit_sphere(Point3D center, double radius, Ray &r) {
-	Vec3D Q = center - r.origin;
-	double a = r.d * r.d;
-	double b = -2 * Q * r.d;
-	double c = Q * Q - radius * radius;
-	if(b*b - 4*a*c < 0) {
-		return false;
+Color rayColor(Ray &r, Hittable_list &world) {
+	Hit_record rec;
+	if(world.hit(r, 0, infinity, rec)) {
+		return 0.5*(rec.normal + Color(1, 1, 1));
 	}
-	return true;
-}
-
-Color rayColor(Ray &r) {
-	Vec3D unitDirection = normal(r.d);
+	Vec3D unitDirection = unit(r.d);
 	double a = 0.5*(unitDirection.y + 1.0l);
 	return (1-a) * Color(1, 1, 1) + a * Color(0.5, 0.7, 1.0f);
 }
@@ -40,7 +33,9 @@ int main() {
 	Vec3D pixel0 = start + (deltaV + deltaU) / 2;
 	std::ofstream output("out.ppm");
 
-
+	Hittable_list world;
+	world.add(make_shared<Sphere>(0.5, Point3D(0, 0, -1)));
+	world.add(make_shared<Sphere>(100, Point3D(0, -100.5, -1)));
 	output << "P3\n" << " " << image_width << " " << image_height << "\n255\n";
 	for(int i=0;i<image_height;i++) {
 		for(int j=0;j<image_width;j++) {
@@ -48,11 +43,7 @@ int main() {
 			Vec3D location = pixel0 + j * deltaU + i * deltaV;
 			Vec3D direction = location - cameraCenter;
 			Ray r(cameraCenter, direction);
-			if(hit_sphere(Point3D(0, 0, -2), 1, r)) {
-				color = rayColor(r);
-			} else {
-				color = Color(1, 1, 1);
-			}
+			color = rayColor(r, world);
 			writeColor(output, color);
 		}
 	}
