@@ -35,6 +35,13 @@ class Vec3D {
 		}
 };
 
+using Point3D = Vec3D;
 
+Vec3D operator*(double, Vec3D);
+Vec3D operator*(Vec3D, double);
+Vec3D operator/(Vec3D, double);
+Vec3D operator-(Vec3D, Vec3D);
+Vec3D operator+(Vec3D, Vec3D);
+Vec3D normal(Vec3D &);
 
 #endif
