@@ -6,6 +6,17 @@
 
 #define ASPECT_RATIO 1.6 // 1600:1000
 
+bool hit_sphere(Point3D center, double radius, Ray &r) {
+	Vec3D Q = center - r.origin;
+	double a = r.d * r.d;
+	double b = -2 * Q * r.d;
+	double c = Q * Q - radius * radius;
+	if(b*b - 4*a*c < 0) {
+		return false;
+	}
+	return true;
+}
+
 Color rayColor(Ray &r) {
 	Vec3D unitDirection = normal(r.d);
 	double a = 0.5*(unitDirection.y + 1.0l);
@@ -18,7 +29,7 @@ int main() {
 	float viewport_height = 2.0f;
 	float viewport_width = viewport_height * (float)(image_width)/(float)(image_height);
 	float focal_length = 1.0f;
-	Point3D cameraCenter = Point3D(1, 1, 1);
+	Point3D cameraCenter = Point3D(0, 0, 0);
 
 	Vec3D viewportU = Vec3D(viewport_width, 0, 0);
 	Vec3D viewportV = Vec3D(0, -viewport_height, 0);
@@ -37,7 +48,11 @@ int main() {
 			Vec3D location = pixel0 + j * deltaU + i * deltaV;
 			Vec3D direction = location - cameraCenter;
 			Ray r(cameraCenter, direction);
-			color = rayColor(r);
+			if(hit_sphere(Point3D(0, 0, -2), 1, r)) {
+				color = rayColor(r);
+			} else {
+				color = Color(1, 1, 1);
+			}
 			writeColor(output, color);
 		}
 	}
