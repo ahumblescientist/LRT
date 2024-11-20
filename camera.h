@@ -10,17 +10,20 @@ class Camera {
 	public:
 		double aspect_ratio = 1.6;
 		int image_width = 100;
+		int sample_number = 10;
+		int max_depth = 10;
 		void render(Hittable &world) {
 			init();	
 			std::ofstream output("out.ppm");
 			output << "P3\n" << " " << image_width << " " << image_height << "\n255\n";
 			for(int i=0;i<image_height;i++) {
 				for(int j=0;j<image_width;j++) {
-					Point3D location = pixel00 + (double(j) * deltaU) + (double(i) * deltaV);
-					Vec3D direction  = location - center;
 					Color color;
-					Ray r(center, direction);
-					color = rayColor(r, world);
+					for(int s = 0;s<sample_number;s++) {
+						Ray r = getRay(j, i);
+						color += rayColor(r, world, 1);
+					}
+					color = color / double(sample_number);
 					writeColor(output, color);
 				}
 			}
@@ -44,10 +47,23 @@ class Camera {
 			deltaV = vecV/double(image_height);
 			pixel00 = center - (vecV/2) - (vecU/2) + focal + (0.5l * deltaU) + (0.5l * deltaV);
 		}
-		Color rayColor(Ray &r, Hittable &obj) {
+		Ray getRay(int x, int y) {
+			Vec3D offset = sample_square();
+			Vec3D loc = pixel00 + (offset.x + double(x)) * deltaU + (offset.y + double(y)) * deltaV;
+			return Ray(center, loc-center);
+		}
+		Vec3D sample_square() {
+			return Vec3D(random_double() - 0.5, random_double() - 0.5, 0);
+		}
+		Color rayColor(Ray r, Hittable &obj, int depth) {
 			Hit_record rec;
-			if(obj.hit(r, Interval(0, infinity), rec)) {
-				return 0.5 * (rec.normal + Color(1, 1, 1));
+			if(depth >= max_depth) {
+				return Color(0, 0, 0);
+			}
+			if(obj.hit(r, Interval(0, infinity), rec) ) {
+				Vec3D direction = random_on_sphere(rec.normal);
+				depth++;
+				return 0.5 * rayColor(Ray(rec.p, direction), obj, depth);
 			}
 			Vec3D direc = unit(r.d);
 			double a = 0.5*(direc.y + 1);

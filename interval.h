@@ -17,6 +17,9 @@ class Interval {
 		bool surrounds(double v) {
 			return min < v && v < max;
 		}
+		double clamp(double v) {
+			return (v < min) ? min : (v>max ? max : v);
+		}
 		static const Interval Empty, Universe;
 };
 const Interval Interval::Empty = Interval();
