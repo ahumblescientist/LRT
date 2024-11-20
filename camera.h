@@ -10,7 +10,7 @@ class Camera {
 	public:
 		double aspect_ratio = 1.6;
 		int image_width = 100;
-		int sample_number = 10;
+		int sample_number = 100;
 		int max_depth = 10;
 		void render(Hittable &world) {
 			init();	
@@ -57,10 +57,10 @@ class Camera {
 		}
 		Color rayColor(Ray r, Hittable &obj, int depth) {
 			Hit_record rec;
-			if(depth >= max_depth) {
+			if(depth > max_depth) {
 				return Color(0, 0, 0);
 			}
-			if(obj.hit(r, Interval(0, infinity), rec) ) {
+			if(obj.hit(r, Interval(0.01, infinity), rec) ) {
 				Vec3D direction = random_on_sphere(rec.normal);
 				depth++;
 				return 0.5 * rayColor(Ray(rec.p, direction), obj, depth);
