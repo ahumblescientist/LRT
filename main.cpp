@@ -8,7 +8,7 @@
 
 Color rayColor(Ray &r, Hittable_list &world) {
 	Hit_record rec;
-	if(world.hit(r, 0, infinity, rec)) {
+	if(world.hit(r, Interval(0, infinity), rec)) {
 		return 0.5*(rec.normal + Color(1, 1, 1));
 	}
 	Vec3D unitDirection = unit(r.d);

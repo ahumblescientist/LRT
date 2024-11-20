@@ -3,6 +3,7 @@
 
 
 #include "hittable.h"
+#include "constants.h"
 #include <vector>
 #include <memory>
 
@@ -17,12 +18,12 @@ class Hittable_list {
 		void add(shared_ptr<Hittable> obj) {
 			objects.push_back(obj);
 		}
-		bool hit(Ray &r, double tmin, double tmax, Hit_record &rec) {
+		bool hit(Ray &r, Interval interval, Hit_record &rec) {
 			Hit_record temp_record;
 			bool hit_anything = false;
-			double closest = tmax;
+			double closest = interval.max;
 			for(int i=0;i<objects.size();i++) {
-				if(objects[i]->hit(r, tmin, tmax, temp_record)) {
+				if(objects[i]->hit(r, interval, temp_record)) {
 					if(temp_record.t < closest) {
 						hit_anything = true;
 						closest = temp_record.t;

@@ -3,6 +3,7 @@
 
 #include "vec.h"
 #include "ray.h"
+#include "constants.h"
 
 class Hit_record { 
 	public:
@@ -19,7 +20,7 @@ class Hit_record {
 class Hittable {
 	public:
 		virtual ~Hittable() = default;
-		virtual bool hit(Ray &r, double min, double max, Hit_record &rec) = 0;
+		virtual bool hit(Ray &r, Interval, Hit_record &rec) = 0;
 };
 
 #endif

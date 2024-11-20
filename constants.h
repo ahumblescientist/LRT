@@ -17,5 +17,6 @@ const double infinity = std::numeric_limits<double>::infinity();
 #include "vec.h"
 #include "color.h"
 #include "ray.h"
+#include "interval.h"
 
 #endif

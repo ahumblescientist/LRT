@@ -9,7 +9,7 @@ class Sphere : public Hittable {
 		double radius;
 		Point3D center;
 		Sphere(double r, Point3D c) : radius(r), center(c) {}
-		bool hit(Ray &r, double min, double max, Hit_record &rec) {
+		bool hit(Ray &r, Interval interval, Hit_record &rec) {
 			Vec3D Q = center - r.origin;
 			double a = r.d * r.d;
 			double b = -2 * Q * r.d;
@@ -19,9 +19,9 @@ class Sphere : public Hittable {
 				return false;
 			} else {
 				t = (-b - sqrt(b*b - 4*a*c)) / (2*a);
-				if(t < min || t > max) {
+				if(!interval.surrounds(t)) {
 					t = (-b + sqrt(b*b - 4*a*c)) / (2*a);
-					if(t < min || t > max) {
+					if(!interval.surrounds(t)) {
 						return false;
 					}
 				}
