@@ -72,7 +72,8 @@ class Camera {
 			}
 			Vec3D direc = unit(r.d);
 			double a = 0.5*(direc.y + 1);
-			return (1-a)*Color(1, 1, 1) + a*Color(0.5, 0.7, 1);
+			return Color(1, 1, 1);
+			// return (1-a)*Color(1, 1, 1) + a*Color(0.5, 0.7, 1);
 		}
 };
 
