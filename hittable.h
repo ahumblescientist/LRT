@@ -5,12 +5,15 @@
 #include "ray.h"
 #include "constants.h"
 
+class Material;
+
 class Hit_record { 
 	public:
 		Point3D p;
 		Vec3D normal;
 		double t;
 		bool isFront;
+		shared_ptr<Material> mat;
 		void set_face_normal(Ray &r, Vec3D outward_normal) {
 			isFront = (r.d * outward_normal < 0.0);
 			normal = isFront ? outward_normal : -outward_normal;

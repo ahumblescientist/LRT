@@ -4,19 +4,21 @@
 #include "constants.h"
 #include "hittable.h"
 #include "hittable_list.h"
+#include "material.h"
 
 class Camera {
 
 	public:
 		double aspect_ratio = 1.6;
 		int image_width = 100;
-		int sample_number = 100;
+		int sample_number = 10;
 		int max_depth = 10;
 		void render(Hittable &world) {
 			init();	
 			std::ofstream output("out.ppm");
 			output << "P3\n" << " " << image_width << " " << image_height << "\n255\n";
 			for(int i=0;i<image_height;i++) {
+				std::cout << "still going " << i << std::endl;
 				for(int j=0;j<image_width;j++) {
 					Color color;
 					for(int s = 0;s<sample_number;s++) {
@@ -61,9 +63,12 @@ class Camera {
 				return Color(0, 0, 0);
 			}
 			if(obj.hit(r, Interval(0.01, infinity), rec) ) {
-				Vec3D direction = random_on_sphere(rec.normal);
-				depth++;
-				return 0.5 * rayColor(Ray(rec.p, direction), obj, depth);
+				Ray scattered;
+				Color attenuation;
+				if(rec.mat->scatter(r, rec, attenuation, scattered)) {
+					return scale(attenuation, rayColor(scattered, obj, depth+1));
+				}
+				return Color(0, 0, 0); // no scattering function for the material
 			}
 			Vec3D direc = unit(r.d);
 			double a = 0.5*(direc.y + 1);

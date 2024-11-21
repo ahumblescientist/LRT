@@ -33,6 +33,10 @@ class Vec3D {
 			double squared = x*x + y*y + z*z;
 			return sqrt(squared);
 		}
+		bool near_zero() {
+			double s = 1e-8;
+			return (x < s) && (y < s) && (z < s);
+		}
 };
 
 using Point3D = Vec3D;
@@ -43,6 +47,7 @@ Vec3D operator/(Vec3D, double);
 Vec3D operator-(Vec3D, Vec3D);
 Vec3D operator+(Vec3D, Vec3D);
 double operator*(Vec3D, Vec3D);
-Vec3D unit(Vec3D );
+Vec3D scale(Vec3D, Vec3D);
+Vec3D unit(Vec3D);
 
 #endif

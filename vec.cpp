@@ -35,3 +35,7 @@ Vec3D operator^(Vec3D v1, Vec3D v2) {
 Vec3D unit(Vec3D v) {
 	return v/v.magnitude();
 }
+
+Vec3D scale(Vec3D a, Vec3D b) {
+	return Vec3D(a.x*b.x, a.y*b.y, a.z*b.z);
+}

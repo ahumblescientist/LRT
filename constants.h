@@ -57,5 +57,9 @@ Vec3D random_on_sphere(Vec3D normal) {
 	return v;
 }
 
+Vec3D reflect(Vec3D v, Vec3D n) {
+	return v - 2 * (v*n) * n;
+}
+
 
 #endif
