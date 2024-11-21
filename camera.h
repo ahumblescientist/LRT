@@ -11,8 +11,8 @@ class Camera {
 	public:
 		double aspect_ratio = 1.6;
 		int image_width = 100;
-		int sample_number = 10;
-		int max_depth = 10;
+		int sample_number = 25;
+		int max_depth = 25;
 		void render(Hittable &world) {
 			init();	
 			std::ofstream output("out.ppm");

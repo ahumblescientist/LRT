@@ -3,7 +3,7 @@ this repo contains my implementaion of a simple raytracer, implemented over the 
 
 ## Testing
 for this particular project, i found no need to use any test's other than generating an accurate looking image, which i did
-![image](out.ppm)
+![image](./out.png)
 
 
 # Resources used
